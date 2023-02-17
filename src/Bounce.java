@@ -7,9 +7,9 @@ public class Bounce {
 //        thirdTask();
 //        fourthTask();
 //        fifthTask();
-        fifthTaskSync();
-//        sixthTask();
-//        sixthTaskSync();
+//        fifthTaskSync();
+        sixthTask();
+        sixthTaskSync();
     }
 
     public static void firstTask() {

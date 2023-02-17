@@ -31,7 +31,6 @@ class Ball {
     }
 
     public void initRandomCoordinates() {
-        System.out.println("RANDOM CORS");
         if(Math.random() < 0.5) {
             x = new Random().nextInt(this.canvas.getWidth());
             y = 0;

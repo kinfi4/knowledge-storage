@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BounceFrame extends JFrame {
-    private static final int BULK_CREATE_BALLS_NUMBER = 1000;
+    private static final int BULK_CREATE_BALLS_NUMBER = 500;
     public static final int WIDTH = 450;
     public static final int HEIGHT = 350;
     public BallCanvas canvas;
@@ -47,6 +47,16 @@ public class BounceFrame extends JFrame {
         buttonBulkCreate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                for (int i = 0; i < BULK_CREATE_BALLS_NUMBER; i++) {
+                    Ball b = new Ball(canvas, Color.BLUE, false);
+                    canvas.add(b);
+
+                    BallThread thread = new BallThread(b);
+                    thread.setPriority(Thread.MIN_PRIORITY);
+                    thread.start();
+                }
+
                 var ball = new Ball(canvas, Color.RED, false);
 
                 canvas.add(ball);
@@ -54,15 +64,6 @@ public class BounceFrame extends JFrame {
                 BallThread thread = new BallThread(ball);
                 thread.setPriority(Thread.MAX_PRIORITY);
                 thread.start();
-
-                for (int i = 0; i < BULK_CREATE_BALLS_NUMBER; i++) {
-                    Ball b = new Ball(canvas, Color.BLUE, false);
-                    canvas.add(b);
-
-                    thread = new BallThread(b);
-                    thread.setPriority(Thread.MIN_PRIORITY);
-                    thread.start();
-                }
             }
         });
 
