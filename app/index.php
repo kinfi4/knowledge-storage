@@ -87,6 +87,7 @@
     $response = mysqli_query($conn, $getAllBooksQuery);
 
     echo "<a class='addButton' href='addBookForm.php'>Add book</a>";
+    echo "<a class='addButton' href='addAuthorForm.php'>Add author</a>";
 
     echo "<table id=\"books\">";
         echo "<tr>";

@@ -21,22 +21,14 @@
 error_reporting(E_ERROR | E_PARSE);
 
 
-$authorId = $_GET["id"];
-$authorName = $_GET["name"];
-$authorAddress = $_GET["address"];
-
-
 echo "
 <div class='my-form'>
-    <form action='addAuthor.php' method='POST'>
-        Author Id: <br>
-        <input type='number' id='authorId' placeholder='Id' name='authorId' required value='$authorId'> <br><br>
-        
+    <form action='addAuthor.php' method='POST'>        
         Name: <br>
-        <input type='text' id='authorName' placeholder='Name' name='authorName' required value='$authorName'> <br><br>
+        <input type='text' id='authorName' placeholder='Name' name='authorName' required> <br><br>
         
         Address: <br>
-        <input type='text' id='authorAddress' placeholder='Address' name='authorAddress' required value='$authorAddress'><br><br>
+        <input type='text' id='authorAddress' placeholder='Address' name='authorAddress' required><br><br>
         
         <input type='submit'>
         
@@ -45,8 +37,6 @@ echo "
     </form>
 </div>
 ";
-
-
 ?>
 
 </body>
