@@ -1,9 +1,9 @@
 import java.util.Random;
 
 public class Consumer implements Runnable {
-    private final Item drop;
+    private final Buffer drop;
 
-    public Consumer(Item drop) {
+    public Consumer(Buffer drop) {
         this.drop = drop;
     }
 

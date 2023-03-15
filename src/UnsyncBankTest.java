@@ -10,8 +10,8 @@ public class UnsyncBankTest {
 
     public static void main(String[] args) {
 //        task1();
-//        task2();
-        task3();
+        task2();
+//        task3();
     }
 
     public static void task3() {
@@ -36,9 +36,9 @@ public class UnsyncBankTest {
     }
 
     public static void task2() {
-        Item drop = new Item();
-        (new Thread(new Producer(drop))).start();
-        (new Thread(new Consumer(drop))).start();
+        Buffer buffer = new Buffer();
+        (new Thread(new Producer(buffer))).start();
+        (new Thread(new Consumer(buffer))).start();
     }
 
     public static void task1() {
