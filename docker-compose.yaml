@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  mongodb:
+    container_name: mongodb  # container name
+    image: mongo  # image to take
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root  # root username
+      MONGO_INITDB_ROOT_PASSWORD: test  # password for root user
+      MONGO_INITDB_DATABASE: shop  # database name
+    ports:
+      - "27017:27017"
+    restart: always
