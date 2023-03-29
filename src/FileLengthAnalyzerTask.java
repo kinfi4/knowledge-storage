@@ -1,11 +1,12 @@
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.RecursiveTask;
 
-public class FileLengthAnalyzerTask extends RecursiveTask<int[]> {
+public class FileLengthAnalyzerTask extends RecursiveTask<HashMap<Integer, Integer>> {
     private final String filePath;
     private final List<String> wordsList;
     private final int start;
@@ -36,8 +37,8 @@ public class FileLengthAnalyzerTask extends RecursiveTask<int[]> {
     }
 
     @Override
-    protected int[] compute() {
-        if(this.isWordListHandleable()) {
+    protected HashMap<Integer, Integer> compute() {
+        if(end - start < 4_000_000) {
             return this.getWordsLength();
         }
 
@@ -52,30 +53,37 @@ public class FileLengthAnalyzerTask extends RecursiveTask<int[]> {
 
         System.out.println("Splitting file " + this.filePath + " into two sections...");
 
-        return this.mergeResults(leftTask.join(), rightTask.compute());
+        return this.updateFirstWithSecond(leftTask.join(), rightTask.compute());
     }
 
-    private int[] mergeResults(int[] firstArray, int[] secondArray) {
-        int[] result = new int[firstArray.length + secondArray.length];
-        System.arraycopy(firstArray, 0, result, 0, firstArray.length);
-        System.arraycopy(secondArray, 0, result, firstArray.length, secondArray.length);
-        return result;
+    private HashMap<Integer, Integer> updateFirstWithSecond(HashMap<Integer, Integer> firstMap, HashMap<Integer, Integer> secondMap) {
+        for(int lengthKey : secondMap.keySet()) {
+            if (firstMap.containsKey(lengthKey)) {
+                int wordsLengthsCount = firstMap.get(lengthKey);
+                firstMap.put(lengthKey, wordsLengthsCount + secondMap.get(lengthKey));
+            } else {
+                firstMap.put(lengthKey, secondMap.get(lengthKey));
+            }
+        }
+
+        return firstMap;
     }
 
-    private boolean isWordListHandleable() {
-        return end - start < 5000;
-    }
-
-    private int[] getWordsLength() {
+    private HashMap<Integer, Integer> getWordsLength() {
 //        System.out.println("GETTING LENGTHS: " + this.start + " " + this.end + " " + this.wordsList.size());
         List<String> wordsSubList = this.wordsList.subList(this.start, this.end);
 
-        int[] lengths = new int[wordsSubList.size()];
+        HashMap<Integer, Integer> lengthsMapper = new HashMap<>();
 
-        for (int i = 0; i < wordsSubList.size(); i++) {
-            lengths[i] = wordsSubList.get(i).length();
+        for (String word : wordsSubList) {
+            if (lengthsMapper.containsKey(word.length())) {
+                int wordsLengthsCount = lengthsMapper.get(word.length());
+                lengthsMapper.put(word.length(), wordsLengthsCount + 1);
+            } else {
+                lengthsMapper.put(word.length(), 1);
+            }
         }
 
-        return lengths;
+        return lengthsMapper;
     }
 }

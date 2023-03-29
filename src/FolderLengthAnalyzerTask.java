@@ -2,14 +2,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
+import java.util.HashMap;
 
-public class FolderLengthAnalyzerTask extends RecursiveTask<int[]> {
-    private final String folderPath;
-    private List<String> filePaths;
-    private List<String> subFolders;
+public class FolderLengthAnalyzerTask extends RecursiveTask<HashMap<Integer, Integer>> {
+    private final List<String> filePaths;
+    private final List<String> subFolders;
 
     FolderLengthAnalyzerTask(String folderPath) {
-        this.folderPath = folderPath;
 
         File directory = new File(folderPath);
         File[] filesAndFolders = directory.listFiles();
@@ -25,7 +24,7 @@ public class FolderLengthAnalyzerTask extends RecursiveTask<int[]> {
             if (file.isDirectory()) {
                 this.subFolders.add(file.getAbsolutePath());
             } else {
-                System.out.println("READING FILE: " + file.getAbsolutePath());
+//                System.out.println("READING FILE: " + file.getAbsolutePath());
 
                 this.filePaths.add(file.getAbsolutePath());
             }
@@ -34,8 +33,8 @@ public class FolderLengthAnalyzerTask extends RecursiveTask<int[]> {
     }
 
     @Override
-    protected int[] compute() {
-        List<RecursiveTask<int[]>> tasks = new ArrayList<>();
+    protected HashMap<Integer, Integer> compute() {
+        List<RecursiveTask<HashMap<Integer, Integer>>> tasks = new ArrayList<>();
 
         for(String folderPath : this.subFolders) {
             FolderLengthAnalyzerTask task = new FolderLengthAnalyzerTask(folderPath);
@@ -51,19 +50,25 @@ public class FolderLengthAnalyzerTask extends RecursiveTask<int[]> {
             task.fork();
         }
 
-        int[] finalResult = new int[0];
+        HashMap<Integer, Integer> finalResult = new HashMap<>();
 
-        for(RecursiveTask<int[]> task : tasks) {
+        for(RecursiveTask<HashMap<Integer, Integer>> task : tasks) {
             finalResult = this.mergeResults(finalResult, task.join());
         }
 
         return finalResult;
     }
 
-    private int[] mergeResults(int[] firstArray, int[] secondArray) {
-        int[] result = new int[firstArray.length + secondArray.length];
-        System.arraycopy(firstArray, 0, result, 0, firstArray.length);
-        System.arraycopy(secondArray, 0, result, firstArray.length, secondArray.length);
-        return result;
+    private HashMap<Integer, Integer> mergeResults(HashMap<Integer, Integer> firstMap, HashMap<Integer, Integer> secondMap) {
+        for(int lengthKey : secondMap.keySet()) {
+            if (firstMap.containsKey(lengthKey)) {
+                int wordsLengthsCount = firstMap.get(lengthKey);
+                firstMap.put(lengthKey, wordsLengthsCount + secondMap.get(lengthKey));
+            } else {
+                firstMap.put(lengthKey, secondMap.get(lengthKey));
+            }
+        }
+
+        return firstMap;
     }
 }
