@@ -54,7 +54,7 @@ public class FileSearchTask extends RecursiveTask<Boolean> {
 
         FileSearchTask rightTask = new FileSearchTask(this.filePath, this.wordToFind, this.wordsList, middleIdx, this.end);
 
-        System.out.println("Splitting file " + this.filePath + " into two sections...");
+//        System.out.println("Splitting file " + this.filePath + " into two sections...");
 
         return leftTask.join() || rightTask.compute();
     }
@@ -72,7 +72,7 @@ public class FileSearchTask extends RecursiveTask<Boolean> {
     }
 
     private boolean isWordListHandleable() {
-        return end - start < 5000;
+        return end - start < 400_000;
     }
 
 }

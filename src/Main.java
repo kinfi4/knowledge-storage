@@ -20,20 +20,19 @@ public class Main {
     }
 
     public static void task1() throws IOException {
+        Instant start1 = Instant.now();
+        _syncWordsLengthCount();
+        Instant end1 = Instant.now();
+        Duration timeElapsed1 = Duration.between(start1, end1);
+        System.out.println("SYNC TIME TOOK: " + timeElapsed1.toMillis());
+
+        System.out.println("=====================================================");
+
         Instant start = Instant.now();
         _parallelWordsLengthCount();
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         System.out.println("PARALLEL TIME TOOK: " + timeElapsed.toMillis());
-
-        System.out.println("=====================================================");
-        
-        start = Instant.now();
-        _syncWordsLengthCount();
-        end = Instant.now();
-        timeElapsed = Duration.between(start, end);
-        System.out.println("SYNC TIME TOOK: " + timeElapsed.toMillis());
-
     }
     public static void task2() {
         ForkJoinPool pool = ForkJoinPool.commonPool();
@@ -95,7 +94,7 @@ public class Main {
         String wordToFind = "python";
 
         ForkJoinPool pool = ForkJoinPool.commonPool();
-        FolderFileSearchAnalyzerTask task = new FolderFileSearchAnalyzerTask("data-folder", wordToFind);
+        FolderFileSearchAnalyzerTask task = new FolderFileSearchAnalyzerTask("./data-folder/programming", wordToFind);
 
         ArrayList<String> filePaths = pool.invoke(task);
         pool.shutdown();
@@ -104,6 +103,7 @@ public class Main {
     }
     public static void _syncWordsLengthCount() throws IOException {
         var paths = listFilesRecursively("./data-folder");
+
         HashMap<Integer, Integer> map = new HashMap<>();
         ArrayList<ArrayList<String>> listWordsList = new ArrayList<>();
         ArrayList<String> contents = new ArrayList<>();
@@ -126,7 +126,9 @@ public class Main {
             listWordsList.add(wordsList);
         }
 
-        for (ArrayList<String> list : listWordsList) {
+        for (int i = 0; i < listWordsList.size(); i++) {
+            ArrayList<String> list = listWordsList.get(i);
+
             for(String word : list) {
                 if (map.containsKey(word.length())) {
                     int wordsLengthsCount = map.get(word.length());
@@ -136,7 +138,6 @@ public class Main {
                 }
             }
         }
-
 
         _showMapStats(map);
     }
@@ -183,5 +184,7 @@ public class Main {
         System.out.println("DISPERSION OF WORDS LENGTHS: " + dispersion);
         System.out.println("DISPERSION OF WORDS LENGTHS: " + Math.sqrt(dispersion));
     }
+
+    static int n = 10000;
 
 }

@@ -1,7 +1,12 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
+import java.util.stream.Stream;
 
 
 public class FolderFileSearchAnalyzerTask extends RecursiveTask<ArrayList<String>> {
@@ -28,8 +33,7 @@ public class FolderFileSearchAnalyzerTask extends RecursiveTask<ArrayList<String
             if (file.isDirectory()) {
                 this.subFolders.add(file.getAbsolutePath());
             } else {
-                System.out.println("READING FILE: " + file.getAbsolutePath());
-
+//                System.out.println("READING FILE: " + file.getAbsolutePath());
                 this.filePaths.add(file.getAbsolutePath());
             }
         }
