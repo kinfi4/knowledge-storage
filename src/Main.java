@@ -21,7 +21,7 @@ public class Main {
 
     public static void task1() throws IOException {
         Instant start1 = Instant.now();
-        _syncWordsLengthCount();
+        _syncWordsLengthCount("data-folder/programming");
         Instant end1 = Instant.now();
         Duration timeElapsed1 = Duration.between(start1, end1);
         System.out.println("SYNC TIME TOOK: " + timeElapsed1.toMillis());
@@ -29,7 +29,7 @@ public class Main {
         System.out.println("=====================================================");
 
         Instant start = Instant.now();
-        _parallelWordsLengthCount();
+        _parallelWordsLengthCount("data-folder/programming");
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         System.out.println("PARALLEL TIME TOOK: " + timeElapsed.toMillis());
@@ -101,9 +101,9 @@ public class Main {
 
         System.out.println("Word '" + wordToFind + "' was found in files: " + filePaths);
     }
-    public static void _syncWordsLengthCount() throws IOException {
-        var paths = listFilesRecursively("./data-folder");
-
+    public static void _syncWordsLengthCount(String dirPath) throws IOException {
+        var paths = listFilesRecursively(dirPath);
+        double k=0, l = 400;
         HashMap<Integer, Integer> map = new HashMap<>();
         ArrayList<ArrayList<String>> listWordsList = new ArrayList<>();
         ArrayList<String> contents = new ArrayList<>();
@@ -126,10 +126,22 @@ public class Main {
             listWordsList.add(wordsList);
         }
 
+        HashSet<Integer> wordsLengths = new HashSet<>();
+        for (int i = 0; i < listWordsList.size(); i++) {
+            ArrayList<String> list = listWordsList.get(i);
+            for(String word : list) {
+                wordsLengths.add(word.length());
+            }
+        }
+        for(int uniqueLength : wordsLengths) {
+            map.put(uniqueLength, 1);
+        }
+
         for (int i = 0; i < listWordsList.size(); i++) {
             ArrayList<String> list = listWordsList.get(i);
 
             for(String word : list) {
+                for (int j=0; j < l; j++){k = k -3;}
                 if (map.containsKey(word.length())) {
                     int wordsLengthsCount = map.get(word.length());
                     map.put(word.length(), wordsLengthsCount + 1);
@@ -138,6 +150,8 @@ public class Main {
                 }
             }
         }
+
+        System.out.println(k);
 
         _showMapStats(map);
     }
@@ -151,9 +165,9 @@ public class Main {
 
         return filePaths;
     }
-    public static void _parallelWordsLengthCount() {
+    public static void _parallelWordsLengthCount(String dirPath) {
         ForkJoinPool pool = ForkJoinPool.commonPool();
-        FolderLengthAnalyzerTask task = new FolderLengthAnalyzerTask("./data-folder");
+        FolderLengthAnalyzerTask task = new FolderLengthAnalyzerTask(dirPath);
 
         var result = pool.invoke(task);
 
