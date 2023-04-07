@@ -34,7 +34,7 @@ public class FileLengthAnalyzerTask extends RecursiveTask<HashMap<Integer, Integ
 
 //        return this.dumbCount();
 
-        if(end - start < 4_000_000) {
+        if(end - start < 1_000_000) {
             return this.getWordsLength();
         }
 

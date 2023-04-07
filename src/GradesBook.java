@@ -3,7 +3,7 @@ import java.util.List;
 
 public class GradesBook {
     public final int STUDENTS_PER_GROUP = 1000;
-    public final int NUMBER_OF_GROUPS = 1000;
+    public final int NUMBER_OF_GROUPS = 10000;
     public int[][] gradesBook;
 
     private final List<Integer> blockedGroups = new ArrayList<>();

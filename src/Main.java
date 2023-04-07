@@ -126,22 +126,10 @@ public class Main {
             listWordsList.add(wordsList);
         }
 
-        HashSet<Integer> wordsLengths = new HashSet<>();
-        for (int i = 0; i < listWordsList.size(); i++) {
-            ArrayList<String> list = listWordsList.get(i);
-            for(String word : list) {
-                wordsLengths.add(word.length());
-            }
-        }
-        for(int uniqueLength : wordsLengths) {
-            map.put(uniqueLength, 1);
-        }
-
         for (int i = 0; i < listWordsList.size(); i++) {
             ArrayList<String> list = listWordsList.get(i);
 
-            for(String word : list) {
-                for (int j=0; j < l; j++){k = k -3;}
+            for(String word : list) {for (int j=0; j < l; j++){k = k -3;}
                 if (map.containsKey(word.length())) {
                     int wordsLengthsCount = map.get(word.length());
                     map.put(word.length(), wordsLengthsCount + 1);
@@ -151,9 +139,16 @@ public class Main {
             }
         }
 
-        System.out.println(k);
-
         _showMapStats(map);
+    }
+    public static void _parallelWordsLengthCount(String dirPath) {
+        ForkJoinPool pool = ForkJoinPool.commonPool();
+        FolderLengthAnalyzerTask task = new FolderLengthAnalyzerTask(dirPath);
+
+        var result = pool.invoke(task);
+
+        pool.shutdown();
+        _showMapStats(result);
     }
     public static ArrayList<String> listFilesRecursively(String dirPath) {
         ArrayList<String> filePaths = new ArrayList<>();
@@ -164,15 +159,6 @@ public class Main {
         }
 
         return filePaths;
-    }
-    public static void _parallelWordsLengthCount(String dirPath) {
-        ForkJoinPool pool = ForkJoinPool.commonPool();
-        FolderLengthAnalyzerTask task = new FolderLengthAnalyzerTask(dirPath);
-
-        var result = pool.invoke(task);
-
-        pool.shutdown();
-        _showMapStats(result);
     }
     public static void _showMapStats(HashMap<Integer, Integer> map) {
         double totalNumberOfWords = 0;
@@ -196,9 +182,6 @@ public class Main {
         System.out.println("TOTAL NUMBER OF WORDS: " + totalNumberOfWords);
         System.out.println("MEAN WORDS LENGTH: " + meadWordsLength);
         System.out.println("DISPERSION OF WORDS LENGTHS: " + dispersion);
-        System.out.println("DISPERSION OF WORDS LENGTHS: " + Math.sqrt(dispersion));
+        System.out.println("STD OF WORDS LENGTHS: " + Math.sqrt(dispersion));
     }
-
-    static int n = 10000;
-
 }

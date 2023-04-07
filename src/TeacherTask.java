@@ -9,6 +9,9 @@ public class TeacherTask extends RecursiveTask<int[][]> {
     TeacherTask(int[][] groupsToPlaceMarks) {
         this.groupsToPlaceMarks = groupsToPlaceMarks;
     }
+    TeacherTask(int[][] groupsToPlaceMarks, int start, int end) {
+        this.groupsToPlaceMarks = groupsToPlaceMarks;
+    }
 
     @Override
     protected int[][] compute() {
@@ -24,8 +27,12 @@ public class TeacherTask extends RecursiveTask<int[][]> {
 
         List<TeacherTask> tasks = new ArrayList<>();
 
-        for (int[] group : this.groupsToPlaceMarks) {
-            TeacherTask task = new TeacherTask(new int[][]{group});
+        int batchSize = this.groupsToPlaceMarks.length / 10;
+
+        for (int i = 0; i < this.groupsToPlaceMarks.length; i += batchSize) {
+            int upperIdx = Math.min(i + batchSize, this.groupsToPlaceMarks.length);
+
+            TeacherTask task = new TeacherTask(Arrays.copyOfRange(this.groupsToPlaceMarks, i, upperIdx));
             tasks.add(task);
             task.fork();
         }
@@ -37,6 +44,26 @@ public class TeacherTask extends RecursiveTask<int[][]> {
         }
 
         return grades.toArray(new int[grades.size()][]);
+
+//        int middle = (this.end + this.start) / 2;
+//
+//        TeacherTask task1 = new TeacherTask(groupsToPlaceMarks, start, middle);
+//        task1.fork();
+//
+//
+//        TeacherTask task2 = new TeacherTask(groupsToPlaceMarks, middle, end);
+//        task2.fork();
+//
+//        return this.mergeArrays(task1.join(), task2.join());
+    }
+
+    private int[][] mergeArrays(int[][] arr1, int[][] arr2) {
+        int[][] resultArray = new int[arr1.length + arr2.length][arr1[0].length];
+
+        System.arraycopy(arr1, 0, resultArray, 0, arr1.length);
+        System.arraycopy(arr2, 0, resultArray, arr1.length, arr2.length);
+
+        return resultArray;
     }
 
     private boolean isHandleable() {
