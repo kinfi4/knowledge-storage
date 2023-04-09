@@ -1,0 +1,30 @@
+body {
+    font-size: 16px;
+    background-color: #ababab;
+}
+header {
+    background-color: #818181;;
+}
+.link {
+    color: white!important;
+    font-weight: bold;
+    font-size: large;
+}
+li {
+    font-size: 2rem;
+    width: 300px;
+    margin: 4px;
+    padding: 4px;
+    list-style: none
+}
+.nav-item {
+    font-size: 16px !important;
+    width: fit-content;
+}
+.main-container {
+    /*padding-top: 60px;*/
+}
+.main-page-card {
+    margin-top: 40px;
+    max-width: 1200px;
+}

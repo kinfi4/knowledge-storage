@@ -1,0 +1,39 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col">
+            <div class="list-group">
+                <a href="http://localhost:3000/weather/Kyiv" class="list-group-item">Kiev</a>
+                <a href="http://localhost:3000/weather/Chernihiv" class="list-group-item">Chernihiv</a>
+                <a href="http://localhost:3000/weather/Lviv" class="list-group-item">Lviv</a>
+                <a href="http://localhost:3000/weather/Kherson" class="list-group-item" tabindex="-1" aria-disabled="true">Kherson</a>
+            </div>
+        </div>
+        <div class="col-8 card d-flex flex-column align-items-center">
+            {{#if weather.city}}
+                <h2 class="mt-2 mb-4">Weather in {{weather.city}}</h2>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Weather</th>
+                            <td>{{weather.weather}}</td>
+                        </tr>
+                        <tr>
+                            <th>Temperature</th>
+                            <td>{{weather.temp}} °C</td>
+                        </tr>
+                        <tr>
+                            <th>Humidity</th>
+                            <td>{{weather.humidity}} %</td>
+                        </tr>
+                        <tr>
+                            <th>Pressure</th>
+                            <td>{{weather.pressure}} Pa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            {{else}}
+                <h2 style="margin-top: 30px;">Choose the city please</h2>
+            {{/if}}
+        </div>
+    </div>
+</div>
