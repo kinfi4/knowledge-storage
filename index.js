@@ -22,6 +22,24 @@ app.get("/authors", (req, response) => {
     });
 });
 
+app.get("/authors/:id", (req, response) => {
+    const { id } = req.params;
+
+    db.get("SELECT * FROM author WHERE id = ?;", id, (error, row) => {
+        if (error) {
+            response.status(500).json({ error: error.message });
+            return;
+        }
+
+        if (!row) {
+            response.status(404).json({ error: "Author not found" });
+            return;
+        }
+
+        response.json(row);
+    });
+});
+
 app.post("/authors", (req, response) => {
     const { name, address } = req.body;
 
@@ -35,7 +53,7 @@ app.post("/authors", (req, response) => {
                 return;
             }
 
-            response.json({ id: "" });
+            response.json({ message: "Author was added." });
         }
     );
 });
@@ -128,7 +146,7 @@ app.post("/books", (req, response) => {
                 return;
             }
 
-            response.json({ id: "" });
+            response.json({ message: "Book was added." });
         }
     );
 });
