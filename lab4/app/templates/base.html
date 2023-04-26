@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Технічний коледж</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1 style="margin-top: 40px;">Технічний коледж</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Головна</a></li>
+                <li><a href="{{ url_for('products') }}">Товари та послуги</a></li>
+                <li><a href="{{ url_for('prices') }}">Прайс-лист</a></li>
+                <li><a href="{{ url_for('contacts') }}">Контакти</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

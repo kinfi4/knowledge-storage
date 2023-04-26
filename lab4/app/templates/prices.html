@@ -1,0 +1,23 @@
+{% include 'base.html' %}
+
+{% block content %}
+<main>
+       <h2>Прайс-лист на послуги та товари</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Ціна</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                    <tr>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.price }} грн/рік</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</main>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% include 'base.html' %}
+
+{% block content %}
+    <main>
+        <div class="productsContainer">
+            <img src="{{ url_for('static', filename='images/img.png') }}" alt="">
+            <div>
+                <h2>Наші послуги та товари</h2>
+                <ul>
+                    {% for service in services %}
+                        <li>{{ service.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </main>
+{% endblock %}

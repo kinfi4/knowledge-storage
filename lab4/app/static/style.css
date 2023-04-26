@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: #dfdfdf;
+    font-size: 20px;
+}
+header {
+    display: flex;
+    justify-content: space-around;
+}
+header h1 {
+    font-size: 50px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #333;
+    color: #ffffff;
+    padding: 10px;
+    font-size: 20px;
+}
+a {
+    text-decoration: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+main {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+ main table td, main table tr {
+    border: #000000 1px solid;
+    padding: 10px 40px;
+}
+.contactsList *{
+    color: black;
+    font-family: "Inter Semi Bold";
+    font-weight: bold;
+    font-size: 20px;
+}
+.productsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px;
+}
+.productsContainer img {
+    margin: 30px;
+}
+.mainPageContainer {
+    padding: 200px;
+    width: 80%;
+}
