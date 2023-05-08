@@ -54,7 +54,7 @@ if __name__ == '__main__':
             f"PROCESSES FOR {(MATRIX_SIZE_1, MATRIX_SIZE_2)}x{MATRIX_SIZE_2, MATRIX_SIZE_3} MATRIX"
         )
 
-        # print("VERIFYING THE RESULT: ", np.allclose(C, np.dot(A, B)))
+        print("VERIFYING THE RESULT: ", np.allclose(C, np.dot(A, B)))
     else:
         rows_count = comm.recv(source=MASTER, tag=0)
         A = np.empty((rows_count, MATRIX_SIZE_2), dtype=np.double)
