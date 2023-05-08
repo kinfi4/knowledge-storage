@@ -10,9 +10,9 @@ if __name__ == '__main__':
     processors = comm.Get_size()
 
     MASTER = 0
-    MATRIX_SIZE_1 = 1000
-    MATRIX_SIZE_2 = 1000
-    MATRIX_SIZE_3 = 1000
+    MATRIX_SIZE_1 = 2000
+    MATRIX_SIZE_2 = 2000
+    MATRIX_SIZE_3 = 2000
 
     if rank == MASTER:
         print(f"MPI HAS STARTED WITH: {processors} PROCESSES")
@@ -34,7 +34,13 @@ if __name__ == '__main__':
 
             comm.send(rows_to_send, dest=destination_process, tag=0)
 
-            comm.Send([A[current_lower_bound:upper_bound, :], MPI.DOUBLE], dest=destination_process, tag=1)
+            sub_matrix_rows = []
+            for rows_idx in range(current_lower_bound, upper_bound):
+                sub_matrix_rows.append(A[rows_idx, :])
+
+            sub_matrix_rows = np.array(sub_matrix_rows)
+
+            comm.Send([sub_matrix_rows, len(sub_matrix_rows)*MATRIX_SIZE_2, MPI.DOUBLE], dest=destination_process, tag=1)
             comm.Send([B, MPI.DOUBLE], dest=destination_process, tag=2)
 
             current_lower_bound = upper_bound
@@ -44,7 +50,10 @@ if __name__ == '__main__':
             rows_to_receive = rows_per_process + (1 if worker_process <= extra_rows else 0)
             upper_bound = current_lower_bound + rows_to_receive
 
-            comm.Recv([C[current_lower_bound:upper_bound, :], MPI.DOUBLE], source=worker_process, tag=3)
+            recv_buffer = np.zeros((rows_to_receive, MATRIX_SIZE_3), dtype=np.double)
+            comm.Recv([recv_buffer, MPI.DOUBLE], source=worker_process, tag=3)
+
+            C[current_lower_bound:upper_bound, :] = recv_buffer
 
             current_lower_bound = upper_bound
 
@@ -63,9 +72,11 @@ if __name__ == '__main__':
         comm.Recv([A, MPI.DOUBLE], source=MASTER, tag=1)
         comm.Recv([B, MPI.DOUBLE], source=MASTER, tag=2)
 
-        # print("RECEIVED MATRIX PART FROM MASTER PROCESS: ", A.shape, B.shape)
-
+        s = MPI.Wtime()
         C = np.dot(A, B)
+        e = MPI.Wtime()
+
+        print("TIME TOOK TO MULTIPLY: ", e - s, " SIZE: ", A.shape, B.shape)
 
         comm.Send([C, MPI.DOUBLE], dest=0, tag=3)
 
