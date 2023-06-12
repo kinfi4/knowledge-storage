@@ -1,13 +1,11 @@
 package MPI;
 
-import mpi.*;
-
 import java.util.Arrays;
 
 public class MatrixMultBlocked {
-    public static void main(String[] args) throws MPIException {
-    }
+    public static void main(String[] args) {
 
+    }
 
 //    public static void main(String[] args) throws MPIException {
 //        MPI.Init(args);

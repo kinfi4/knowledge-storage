@@ -6,7 +6,7 @@ import mpi.MPIException;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Send_Sort_SendFirstElements_INTS {
+public class Send_Sort_SendFirstElements_INTS__MATRIX {
     public static void main(String[] args) throws MPIException {
         MPI.Init(args);
 

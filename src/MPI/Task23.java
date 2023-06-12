@@ -27,8 +27,8 @@ public class Task23 {
             }
         }
 
-        int[] A1D = Send_Sort_SendFirstElements_INTS.convert2DTo1D(A);
-        int[] B1D = Send_Sort_SendFirstElements_INTS.convert2DTo1D(B);
+        int[] A1D = Send_Sort_SendFirstElements_INTS__MATRIX.convert2DTo1D(A);
+        int[] B1D = Send_Sort_SendFirstElements_INTS__MATRIX.convert2DTo1D(B);
 
         int[] sendcounts = new int[matrixSize]; // send count array for Scatterv
         int[] displs = new int[matrixSize]; // displacement array for Scatterv
@@ -53,8 +53,8 @@ public class Task23 {
 
         int numberOfItems = blockSize + (rank < extraRows ? 1 : 0);
 
-        int[][] blocksA = Send_Sort_SendFirstElements_INTS.convert1DTo2D(bufferA, numberOfItems, matrixSize);
-        int[][] blocksB = Send_Sort_SendFirstElements_INTS.convert1DTo2D(bufferB, numberOfItems, matrixSize);
+        int[][] blocksA = Send_Sort_SendFirstElements_INTS__MATRIX.convert1DTo2D(bufferA, numberOfItems, matrixSize);
+        int[][] blocksB = Send_Sort_SendFirstElements_INTS__MATRIX.convert1DTo2D(bufferB, numberOfItems, matrixSize);
 
         int[] resultSums = new int[numberOfItems];
         for (int i = 0; i < numberOfItems; i++) {

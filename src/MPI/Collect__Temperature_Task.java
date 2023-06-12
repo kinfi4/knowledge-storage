@@ -4,7 +4,7 @@ import mpi.MPI;
 
 import java.util.Arrays;
 
-public class Collect {
+public class Collect__Temperature_Task {
     public static void main(String[] args) {
         MPI.Init(args);
 

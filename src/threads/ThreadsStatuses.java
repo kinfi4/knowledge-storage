@@ -19,8 +19,13 @@ public class ThreadsStatuses {
 
 class ThreadState {
     private boolean state = true;
-    public boolean stop = false;
-
+    private boolean stop = false;
+    public synchronized void stopState() {
+        this.stop = true;
+    }
+    public synchronized boolean getState() {
+        return this.state;
+    }
     public synchronized void toggleState() {
         this.state = !this.state;
         notifyAll();
@@ -44,7 +49,7 @@ class ThreadChangeState extends Thread {
     }
 
     public void run() {
-        while (!this.state.stop) {
+        while (!this.state.getState()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {}
@@ -70,7 +75,7 @@ class ThreadReadState extends Thread {
             System.out.println("Counter is equal to " + counter--);
 
             if (counter == 0) {
-                this.state.stop = true;
+                this.state.stopState();
                 break;
             }
 

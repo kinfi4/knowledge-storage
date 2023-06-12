@@ -6,6 +6,7 @@ import support.MatrixMethods;
 
 public class ScatterSend {
     void sendTest() {
+        MPI.Init(null);
         int rank = MPI.COMM_WORLD.Rank();
         int MASTER = 0;
         int processorsCount = MPI.COMM_WORLD.Size();
@@ -36,6 +37,8 @@ public class ScatterSend {
 
         MPI.COMM_WORLD.Scatterv(A1D, 0, sendcounts, displs, MPI.INT, bufferA, 0, sendcounts[rank], MPI.INT, MASTER);
 
-        int[][] blocksA = Send_Sort_SendFirstElements_INTS.convert1DTo2D(bufferA, blockSize + (rank < extraRows ? 1 : 0), matrixSize);
+        int[][] blocksA = Send_Sort_SendFirstElements_INTS__MATRIX.convert1DTo2D(bufferA, blockSize + (rank < extraRows ? 1 : 0), matrixSize);
+
+        MPI.Finalize();
     }
 }

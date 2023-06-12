@@ -19,10 +19,7 @@ public class CollectSum {
         MPI.COMM_WORLD.Allreduce(new int[] {localSum}, 0, collectSum, 0, 1, MPI.INT, MPI.SUM);
         int SUM = collectSum[0];
 
-        if (myRank == 0) {
-            System.out.println("Total sum: " + SUM);
-        }
-
+        System.out.println("Rank " + myRank + " SUM = " + SUM);
         MPI.Finalize();
     }
 }
