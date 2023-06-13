@@ -1,6 +1,6 @@
 package pools.queueSystem;
 
-public class QueuingSystemStatisticsCollectorRunnable extends Thread {
+public class QueuingSystemStatisticsCollectorRunnable implements Runnable {
     private final QueuingSystemManager manager;
     private int sumQueuesLengths;
     private int countQueueLengthsCalculations;
@@ -11,7 +11,6 @@ public class QueuingSystemStatisticsCollectorRunnable extends Thread {
         this.countQueueLengthsCalculations = 0;
     }
 
-    @Override
     public void run() {
         while(!this.manager.queueIsClosed) {
             try {

@@ -2,14 +2,13 @@ package pools.queueSystem;
 
 import java.util.Random;
 
-public class QueuingSystemProducerRunnable extends Thread {
+public class QueuingSystemProducerRunnable implements Runnable {
     private final QueuingSystemManager manager;
 
     QueuingSystemProducerRunnable(QueuingSystemManager manager) {
         this.manager = manager;
     }
 
-    @Override
     public void run() {
         Random random = new Random();
         long startTime = System.currentTimeMillis();

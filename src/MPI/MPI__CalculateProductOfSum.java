@@ -38,26 +38,11 @@ public class MPI__CalculateProductOfSum {
                 int last = first + rowsPerProcess;
 
                 int[][] subA = Arrays.copyOfRange(A, first, last);
-                int[] sendBufferA = new int[subA.length * subA[0].length];
-                int indexA = 0;
-                for (int[] ints : subA) {
-                    for (int j = 0; j < subA[0].length; j++) {
-                        sendBufferA[indexA] = ints[j];
-                        indexA++;
-                    }
-                }
+                int[] sendBufferA = get1dfrom2d(subA);
 
                 int[][] subB = Arrays.copyOfRange(B, first, last);
-                int[] sendBufferB = new int[subB.length * subB[0].length];
-                int indexB = 0;
-                for (int[] ints : subB) {
-                    for (int j = 0; j < subB[0].length; j++) {
-                        sendBufferA[indexB] = ints[j];
-                        indexB++;
-                    }
-                }
+                int[] sendBufferB = get1dfrom2d(subB);
 
-                MPI.COMM_WORLD.Send(new int[] {process - 1}, 0, 1, MPI.INT, process, 0);
                 MPI.COMM_WORLD.Send(sendBufferA, 0, rowsPerProcess * MATRIX_SIZE, MPI.INT, process, 1);
                 MPI.COMM_WORLD.Send(sendBufferB, 0, rowsPerProcess * MATRIX_SIZE, MPI.INT, process, 2);
             }
@@ -80,14 +65,8 @@ public class MPI__CalculateProductOfSum {
 
             int[] recvBufferA = new int[rowsPerProcess * MATRIX_SIZE];
             MPI.COMM_WORLD.Recv(recvBufferA, 0, rowsPerProcess * MATRIX_SIZE, MPI.INT, MASTER, 1);
-            int[][] rowsOfA = new int[rowsPerProcess][MATRIX_SIZE];
-            int subAIdx = 0;
-            for (int i = 0; i < rowsPerProcess; i++) {
-                for (int j = 0; j < MATRIX_SIZE; j++) {
-                    rowsOfA[i][j] = recvBufferA[subAIdx];
-                    subAIdx++;
-                }
-            }
+            int[][] rowsOfA = get2dFrom1d(recvBufferA, rowsPerProcess, MATRIX_SIZE);
+
 
             int[] recvBufferB = new int[rowsPerProcess * MATRIX_SIZE];
             MPI.COMM_WORLD.Recv(recvBufferB, 0, rowsPerProcess * MATRIX_SIZE, MPI.INT, MASTER, 2);
@@ -116,4 +95,29 @@ public class MPI__CalculateProductOfSum {
 
         MPI.Finalize();
     }
+
+    public static int[] get1dfrom2d(int[][] matrix) {
+        int[] arr1D = new int[matrix.length * matrix[0].length];
+
+        int index = 0;
+        for (int[] row : matrix) {
+            for (int element : row) {
+                arr1D[index++] = element;
+            }
+        }
+        return arr1D;
+    }
+
+    public static int[][] get2dFrom1d(int[] arr1D, int rows, int cols) {
+        int[][] matrix = new int[rows][cols];
+
+        int index = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = arr1D[index++];
+            }
+        }
+        return matrix;
+    }
+
 }

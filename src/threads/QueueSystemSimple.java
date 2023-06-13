@@ -4,12 +4,11 @@ import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class QueueSystem {
+public class QueueSystemSimple {
     public static ReentrantLock lock = new ReentrantLock();
     public static Condition bufferIsFull = lock.newCondition();
     public static Condition bufferIsEmpty = lock.newCondition();
     public static int totalOperations = 0;
-
 
     public static void main(String[] args) {
         LinkedList<Object> buffer = new LinkedList<>();

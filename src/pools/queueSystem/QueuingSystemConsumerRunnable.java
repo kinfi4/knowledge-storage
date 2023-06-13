@@ -2,14 +2,13 @@ package pools.queueSystem;
 
 import java.util.Random;
 
-public class QueuingSystemConsumerRunnable extends Thread {
+public class QueuingSystemConsumerRunnable implements Runnable {
     private final QueuingSystemManager manager;
 
     QueuingSystemConsumerRunnable(QueuingSystemManager manager) {
         this.manager = manager;
     }
 
-    @Override
     public void run() {
         Random random = new Random();
 
