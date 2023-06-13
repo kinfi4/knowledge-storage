@@ -10,6 +10,7 @@ public class QueueSystem {
     public static Condition bufferIsEmpty = lock.newCondition();
     public static int totalOperations = 0;
 
+
     public static void main(String[] args) {
         LinkedList<Object> buffer = new LinkedList<>();
         int bufferSize = 10;
@@ -56,7 +57,7 @@ public class QueueSystem {
                     Object obj = new Object();
                     buffer.add(obj);
 
-                    System.out.println("Thread A added object " + obj);
+                    System.out.println("Thread P added object " + obj);
 
                     bufferIsEmpty.signalAll();
                     totalOperations++;
@@ -80,7 +81,7 @@ public class QueueSystem {
                     }
 
                     Object obj = buffer.remove();
-                    System.out.println("Thread B removed object " + obj);
+                    System.out.println("Thread D removed object " + obj);
 
                     bufferIsFull.signalAll();
 

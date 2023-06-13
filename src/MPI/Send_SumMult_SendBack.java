@@ -6,7 +6,7 @@ import java.util.Arrays;
 import support.MatrixMethods;
 
 
-public class Task23 {
+public class Send_SumMult_SendBack {
     public static void main(String[] args) {
         MPI.Init(args);
         int rank = MPI.COMM_WORLD.Rank();

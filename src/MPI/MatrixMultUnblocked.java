@@ -2,10 +2,7 @@ package MPI;
 
 import mpi.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class Unblocked {
+public class MatrixMultUnblocked {
     public static void main(String[] args) throws MPIException {
 
     }
