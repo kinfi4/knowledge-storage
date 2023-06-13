@@ -1,14 +1,20 @@
+import random
 from time import perf_counter
 
 import requests
-import numpy as np
 
 
-def _generate_matrix(matrix_size: int) -> np.ndarray:
-    return np.random.randint(0, 1000, size=(matrix_size, matrix_size))
+def _generate_traffic_data() -> list:
+    days = 1000
+    frames = 288
+
+    return [
+        [random.randint(0, 3) for _ in range(frames)] for _ in range(days)
+    ]
 
 
 def test_endpoint_speed(endpoint: str, data: dict) -> None:
+    print(data["traffic_data"])
     start_time = perf_counter()
 
     response = requests.post(endpoint, json=data)
@@ -20,7 +26,6 @@ def test_endpoint_speed(endpoint: str, data: dict) -> None:
 
 
 if __name__ == "__main__":
-    test_endpoint_speed('http://localhost:5000/mult-matrix', data={
-        "matrix1": _generate_matrix(1000).tolist(),
-        "matrix2": _generate_matrix(1000).tolist()
+    test_endpoint_speed('http://localhost:5000/request', data={
+        "traffic_data": _generate_traffic_data()
     })

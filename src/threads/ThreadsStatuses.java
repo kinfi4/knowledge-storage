@@ -30,7 +30,6 @@ class ThreadState {
         this.state = !this.state;
         notifyAll();
     }
-
     public synchronized void validateState() {
         while (!this.state) {
             try {
@@ -38,7 +37,6 @@ class ThreadState {
             } catch (InterruptedException ignored) {}
         }
     }
-
 }
 
 class ThreadChangeState extends Thread {
