@@ -1,4 +1,4 @@
-package MPI;
+package MPI.CascadeSum;
 
 import mpi.MPI;
 import mpi.MPIException;

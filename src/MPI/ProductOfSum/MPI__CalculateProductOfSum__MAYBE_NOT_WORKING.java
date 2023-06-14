@@ -1,4 +1,4 @@
-package MPI;
+package MPI.ProductOfSum;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -6,7 +6,7 @@ import java.util.Random;
 import  mpi.*;
 
 
-public class MPI__CalculateProductOfSum {
+public class MPI__CalculateProductOfSum__MAYBE_NOT_WORKING {
 
     public static void main(String[] args) throws MPIException {
         MPI.Init(args);

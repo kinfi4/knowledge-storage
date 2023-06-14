@@ -1,4 +1,4 @@
-package MPI;
+package MPI.Collect;
 
 import mpi.MPI;
 

@@ -1,4 +1,4 @@
-package MPI;
+package MPI.MatrixMultiplication;
 
 import java.util.Arrays;
 

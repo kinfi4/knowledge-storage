@@ -1,4 +1,4 @@
-package MPI;
+package MPI.SendSendFirstBack;
 
 import mpi.MPI;
 import support.MatrixMethods;

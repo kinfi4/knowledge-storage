@@ -1,4 +1,4 @@
-package MPI;
+package MPI.ProductOfSum;
 
 import mpi.MPI;
 import mpi.MPIException;
