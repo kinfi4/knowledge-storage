@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="google-signin-client_id" content="462744149970-1c9niiccc3vdilqvdg16g3qllh1vqcge.apps.googleusercontent.com">
+</head>
+<body>
+    <p>Here you can authorize using google</p>
+    <div id="my-signin"></div>
+
+    <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+    <script>
+
+        function successfulLogin(googleUser) {
+            const profile = googleUser.getBasicProfile()
+            const token = googleUser.getAuthResponse().id_token
+
+            fetch('http://localhost:8000/api/v1/auth/google/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: profile.getEmail(),
+                    token: token
+                })
+            }).then(res => res.json()).then(data => console.log(data))
+        }
+
+        function failedLogin(error) {
+            console.log('Login failed')
+            console.log(error)
+        }
+
+        window.onLoadCallback = function () {
+            gapi.signin2.render('my-signin', {
+                'scope': 'profile email',
+                'width': 250,
+                'height': 55,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': successfulLogin,
+                'onfailure': failedLogin
+            });
+        }
+    </script>
+</body>
+</html>

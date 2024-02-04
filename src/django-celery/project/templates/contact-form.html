@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact form</title>
+</head>
+<body>
+    <h2>Enter email and name</h2> <br>
+    <form action="/" method="POST">
+        {% csrf_token %}
+
+        <p>
+            <b>Email:</b> {{ form.email }}
+        </p>
+        <p>
+            <b>Name:</b> {{ form.username }}
+        </p>
+
+        <input type="submit">
+    </form>
+
+</body>
+</html>
