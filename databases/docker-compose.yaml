@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    container_name: postgres-interview-test-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+
+volumes:
+    postgres-data:
