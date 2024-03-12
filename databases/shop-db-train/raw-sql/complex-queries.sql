@@ -77,3 +77,80 @@ WHERE p.name = (
     ORDER BY sum(order_item.quantity) DESC LIMIT 1
 )
 GROUP BY c.name, p.name;
+
+
+-- getting orders information along with product name and total sold quantity
+WITH orders_with_total_sold_items__cte AS (
+    SELECT o.id, sum(o_i.quantity) AS total_items_sold FROM "order" o
+    JOIN order_item o_i ON o.id = o_i.order_id
+    GROUP BY o.id
+)
+SELECT o.id, u.username, cte.total_items_sold FROM "order" o
+    JOIN orders_with_total_sold_items__cte cte ON o.id = cte.id
+    JOIN "user" u ON u.id = o.user_id
+ORDER BY cte.total_items_sold DESC
+LIMIT 5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WITH order_with_total_sold__cte AS (
+    SELECT order_id, sum(order_item.quantity) AS total_items_sold FROM "order"
+    JOIN order_item ON "order".id = order_item.order_id
+    GROUP BY order_id
+)
+SELECT order_id, username, cte.total_items_sold FROM "order"
+    JOIN order_with_total_sold__cte cte ON "order".id = cte.order_id
+    JOIN "user" ON "order".user_id = "user".id
+ORDER BY cte.total_items_sold DESC
+LIMIT 5;
+
+
+SELECT order_id, username, sum(order_item.quantity) as total_items_sold FROM "order"
+    JOIN order_item ON "order".id = order_item.order_id
+    JOIN "user" ON "order".user_id = "user".id
+GROUP BY order_id, username
+ORDER BY total_items_sold DESC
+LIMIT 5;
+
+
+SELECT
+    o.id,
+    username,
+    (
+        SELECT
+            CASE WHEN sum(order_item.quantity) IS NULL THEN 0 ELSE sum(order_item.quantity) END
+        FROM order_item
+            WHERE order_item.order_id = o.id
+    ) AS total_items_sold
+FROM "order" o
+JOIN "user" ON o.user_id = "user".id
+ORDER BY total_items_sold DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

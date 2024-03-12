@@ -1,14 +1,17 @@
 from datetime import datetime
 
 from sqlalchemy import String, DateTime, func, Text, DECIMAL, ForeignKey
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+from alchemy.orm.tables.mixins import MixinAsDict
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class User(Base):
+class User(MixinAsDict, Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -22,7 +25,7 @@ class User(Base):
     orders: Mapped[list["Order"]] = relationship(back_populates="user")
 
 
-class Category(Base):
+class Category(MixinAsDict, Base):
     __tablename__ = "category"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -31,7 +34,7 @@ class Category(Base):
     products: Mapped[list["Product"]] = relationship("Product", back_populates="category")
 
 
-class Product(Base):
+class Product(MixinAsDict, Base):
     __tablename__ = "product"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -43,13 +46,20 @@ class Product(Base):
     order_items: Mapped[list["OrderItem"]] = relationship("OrderItem", back_populates="product")
     reviews: Mapped[list["Review"]] = relationship(back_populates="product")
 
+    @hybrid_property
+    def total_sold(self) -> int:
+        """
+        This works only on instance level, not on query level
+        """
+        return sum([item.quantity for item in self.order_items])
 
-class Order(Base):
+
+class Order(MixinAsDict, Base):
     __tablename__ = "order"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="SET NULL"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="SET NULL"), nullable=True)
 
     user: Mapped[User] = relationship("User", back_populates="orders")
     order_items: Mapped[list["OrderItem"]] = relationship("OrderItem", back_populates="order")
@@ -62,7 +72,7 @@ class OrderItem(Base):
     quantity: Mapped[int] = mapped_column(nullable=False)
 
     order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="SET NULL"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="SET NULL"), nullable=True)
 
     order: Mapped[Order] = relationship("Order", back_populates="order_items")
     product: Mapped[Product] = relationship("Product", back_populates="order_items")
