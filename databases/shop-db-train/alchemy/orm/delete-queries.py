@@ -9,7 +9,7 @@ def delete_user_by_id() -> None:
 
     with manager.session() as session:
         session: Session
-        session.query(User).filter(User.id == user_id).delete()
+        session.query(User).filter(User.id == user_id).delete()  # doesn't work for some reason :((
         # or
         user = session.query(User).get(user_id)
         session.delete(user)
